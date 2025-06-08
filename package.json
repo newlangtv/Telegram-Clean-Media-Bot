@@ -1,0 +1,12 @@
+{
+  "name": "telegram-delete-media-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "William Lam",
+  "license": "MIT",
+  "description": "这是一个基于 Node.js 和 node-telegram-bot-api 库开发的 Telegram 机器人，功能是在指定的群组内，自动监控并在北京时间晚上 0 点到 8 点期间删除所有发送的媒体文件（包括照片、视频、音频、语音、文档、贴纸和自定义表情），并记录删除日志，同时将日志发送给多个管理员。"
+}
