@@ -9,6 +9,11 @@ const ALLOWED_GROUP_IDS = [
   -1009876543210,
 ];
 
+const IGNORED_CHANNEL_IDS = [
+  -1001122334455,
+  -1005544332211,
+];
+
 const ADMIN_IDS = [
   123456789,
   987654321,
@@ -40,8 +45,8 @@ function logDeletion(chatId, messageId, mediaType, sender) {
   const senderName = getUserDisplayName(sender);
   const senderId = sender?.id || 'Unknown';
   const logLine = `[${timestamp}] Deleted ${mediaType} in ChatID:${chatId}, MsgID:${messageId}, Sender:${senderName} (ID:${senderId})\n`;
-
   const logPath = path.join(__dirname, 'deleted_log.txt');
+
   fs.appendFile(logPath, logLine, (err) => {
     if (err) console.error('记录写入失败:', err.message);
   });
@@ -55,12 +60,13 @@ function logDeletion(chatId, messageId, mediaType, sender) {
 
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
+
+  if (IGNORED_CHANNEL_IDS.includes(chatId)) return;
+  if (!ALLOWED_GROUP_IDS.includes(chatId)) return;
+  if (!isBeijingNightTime()) return;
+
   const messageId = msg.message_id;
   const sender = msg.from;
-
-  if (!ALLOWED_GROUP_IDS.includes(chatId)) return;
-
-  if (!isBeijingNightTime()) return;
 
   const mediaType = msg.photo ? 'photo'
     : msg.video ? 'video'
